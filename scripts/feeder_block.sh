@@ -32,7 +32,7 @@ if [ -x `which curl` -a -x `which ipset` ]; then
    ipset flush $SETNAME2
    sleep 5
    ipset list $SETNAME2 &>/dev/null
-   ipset create $SETNAME2 iphash
+   ipset create $SETNAME2 hash:net
    iptables -I INPUT 2 -m set --match-set $SETNAME2 src -j DROP
    iptables -A FORWARD -m set --match-set $SETNAME2 src -j DROP
       for i in $feeder_block_spamhausdrop_ips
