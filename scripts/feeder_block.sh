@@ -16,7 +16,9 @@ if [ -x `which curl` -a -x `which ipset` ]; then
    ipset create $SETNAME1 iphash
    iptables -I INPUT 1 -m set --match-set $SETNAME1 src -j DROP
    iptables -A FORWARD -m set --match-set $SETNAME1 src -j DROP
-      for i in $feeder_block_stamparm_ips ; do ipset add $SETNAME1 $i ; done
+      for i in $feeder_block_stamparm_ips
+           do ipset add $SETNAME1 $i
+      done
    logger -t "feeder_block_stamparm_ip_block" "$( ipset list $SETNAME1 | wc -l )"
 fi
 
@@ -33,6 +35,10 @@ if [ -x `which curl` -a -x `which ipset` ]; then
    ipset create $SETNAME2 iphash
    iptables -I INPUT 2 -m set --match-set $SETNAME2 src -j DROP
    iptables -A FORWARD -m set --match-set $SETNAME2 src -j DROP
-      for i in $feeder_block_spamhausdrop_ips ; do ipset add $SETNAME2 $i ; done
+      for i in $feeder_block_spamhausdrop_ips
+           do ipset add $SETNAME2 $i
+      done
    logger -t "feeder_block_spamhausdrop_ip_block" "$( ipset list $SETNAME2 | wc -l )"
 fi
+
+EOF
