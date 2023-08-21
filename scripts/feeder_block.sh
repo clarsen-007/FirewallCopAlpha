@@ -1,9 +1,10 @@
 #!/bin/bash
 
-# Version 01.03.01.00
+# Version 01.04.00.00
+# Added - emergingthreats_compromised_ips
 
 ## Feeder Block 1
-## Feeder Block Stamparm
+## Feeder Block Stamparm - added in 01.01.00.00
 
 SETNAME1="feeder_block_stamparm"
 if [ -x `which curl` -a -x `which ipset` ]; then
@@ -23,7 +24,7 @@ if [ -x `which curl` -a -x `which ipset` ]; then
 fi
 
 ## Feeder Block 2
-## Feeder Block emergingthreats_compromised_ips
+## Feeder Block emergingthreats_compromised_ips - added in 01.04.00.00
 
 SETNAME2="emergingthreats_compromised_ips"
 if [ -x `which curl` -a -x `which ipset` ]; then
