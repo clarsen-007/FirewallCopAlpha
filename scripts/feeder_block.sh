@@ -47,7 +47,7 @@ fi
 
 SETNAME3="blocklist_de_ips"
 if [ -x `which curl` -a -x `which ipset` ]; then
-   feeder_block_blocklist_de_ips=$( curl --compressed https://lists.blocklist.de/lists/all.txt 2>/dev/null )
+   feeder_block_blocklist_de_ips=$( curl --compressed https://lists.blocklist.de/lists/all.txt 2>/dev/null | grep -v ":" )
    logger -t "feeder_block_blocklist_de_ips_ip_block" "Adding IPs to be blocked."
    ipset flush $SETNAME3
    sleep 5
