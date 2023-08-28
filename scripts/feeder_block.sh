@@ -48,7 +48,7 @@ fi
 ## Feeder Block blocklist.de - added in 01.05.00.00
 
 SETNAME3="blocklist_de_ips"
-if [ -x 'which curl' -a -x 'which ipset' ]; then
+if [ -x `which curl` -a -x `which ipset` ]; then
    feeder_block_blocklist_de_ips=$( curl --compressed https://lists.blocklist.de/lists/all.txt 2>/dev/null | grep -v ":" )
    logger -t "feeder_block_blocklist_de_ips_ip_block" "Adding IPs to be blocked."
    ipset flush $SETNAME3
