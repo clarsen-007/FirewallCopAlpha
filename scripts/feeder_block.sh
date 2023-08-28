@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Version 01.05.00.00
+# Added - blocklist_de_ips
 # Version 01.04.00.00
 # Added - emergingthreats_compromised_ips
 
