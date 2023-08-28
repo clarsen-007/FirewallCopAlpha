@@ -41,3 +41,22 @@ if [ -x `which curl` -a -x `which ipset` ]; then
       done
    logger -t "feeder_block_emergingthreats_compromised_ips_ip_block" "$( ipset list $SETNAME2 | wc -l )"
 fi
+
+## Feeder Block 3
+## Feeder Block blocklist.de - added in 01.05.00.00
+
+SETNAME3="blocklist_de_ips"
+if [ -x `which curl` -a -x `which ipset` ]; then
+   feeder_block_blocklist_de_ips=$( curl --compressed https://lists.blocklist.de/lists/all.txt 2>/dev/null )
+   logger -t "feeder_block_blocklist_de_ips_ip_block" "Adding IPs to be blocked."
+   ipset flush $SETNAME3
+   sleep 5
+   ipset list $SETNAME3 &>/dev/null
+   ipset create $SETNAME2 iphash
+   iptables -I INPUT 1 -m set --match-set $SETNAME3 src -j DROP
+   iptables -A FORWARD -m set --match-set $SETNAME3 src -j DROP
+      for i in $feeder_block_blocklist_de_ips
+           do ipset add $SETNAME3 $i
+      done
+   logger -t "feeder_block_blocklist_de_ips_ip_block" "$( ipset list $SETNAME3 | wc -l )"
+fi
