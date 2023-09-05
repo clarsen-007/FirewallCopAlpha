@@ -75,7 +75,7 @@ if [ -x `which curl` -a -x `which ipset` ]; then
    ipset flush $SETNAME4
    sleep 5
    ipset list $SETNAME4 &>/dev/null
-   ipset create $SETNAME4 iphash
+   ipset create $SETNAME4 hash:ip family inet
    iptables -I INPUT 1 -m set --match-set $SETNAME4 src -j DROP
    iptables -A FORWARD -m set --match-set $SETNAME4 src -j DROP
       for i in $feeder_block_abuse_ch_ips
