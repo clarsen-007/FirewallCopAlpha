@@ -80,7 +80,7 @@ if [ -x `which curl` -a -x `which ipset` ]; then
    iptables -I INPUT 1 -m set --match-set $SETNAME4 src -j DROP
    iptables -A FORWARD -m set --match-set $SETNAME4 src -j DROP
       for i in $feeder_block_abuse_ch_ips
-           do ipset add $SETNAME4 $i
+           do ipset add $SETNAME4 -! $i
       done
    logger -t "feeder_block_abuse_ch_ips_ip_block" "$( ipset list $SETNAME4 | wc -l )"
 fi
