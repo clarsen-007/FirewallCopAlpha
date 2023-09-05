@@ -70,7 +70,8 @@ fi
 
 SETNAME4="abuse_ch_ips"
 if [ -x `which curl` -a -x `which ipset` ]; then
-   feeder_block_abuse_ch_ips=$( curl --compressed https://sslbl.abuse.ch/blacklist/sslipblacklist.txt 2>/dev/null | grep -v "#" )
+   feeder_block_abuse_ch_ips=$( curl --compressed https://sslbl.abuse.ch/blacklist/sslipblacklist.txt 2>/dev/null \
+                     | grep -v "#" | sed 's/[[:blank:]]//g' )
    logger -t "feeder_block_abuse_ch_ips_ip_block" "Adding IPs to be blocked."
    ipset flush $SETNAME4
    sleep 5
