@@ -1,7 +1,9 @@
 #!/bin/bash
 
+# Version 01.06.00.00
+# Added - abuse.ch  ----  https://sslbl.abuse.ch/blacklist/
 # Version 01.05.00.00
-# Added - blocklist_de_ips
+# Added - blocklist_de_ips  ----  https://lists.blocklist.de/lists/
 # Version 01.04.00.00
 # Added - emergingthreats_compromised_ips
 
@@ -61,4 +63,23 @@ if [ -x `which curl` -a -x `which ipset` ]; then
            do ipset add $SETNAME3 $i
       done
    logger -t "feeder_block_blocklist_de_ips_ip_block" "$( ipset list $SETNAME3 | wc -l )"
+fi
+
+## Feeder Block 4
+## Feeder Block abuse.ch - added in 01.06.00.00
+
+SETNAME4="abuse_ch_ips"
+if [ -x `which curl` -a -x `which ipset` ]; then
+   feeder_block_abuse_ch_ips=$( curl --compressed https://sslbl.abuse.ch/blacklist/sslipblacklist.txt 2>/dev/null | grep -v "#" )
+   logger -t "feeder_block_abuse_ch_ips_ip_block" "Adding IPs to be blocked."
+   ipset flush $SETNAME4
+   sleep 5
+   ipset list $SETNAME4 &>/dev/null
+   ipset create $SETNAME4 iphash
+   iptables -I INPUT 1 -m set --match-set $SETNAME4 src -j DROP
+   iptables -A FORWARD -m set --match-set $SETNAME4 src -j DROP
+      for i in $feeder_block_abuse_ch_ips
+           do ipset add $SETNAME4 $i
+      done
+   logger -t "feeder_block_abuse_ch_ips_ip_block" "$( ipset list $SETNAME4 | wc -l )"
 fi
