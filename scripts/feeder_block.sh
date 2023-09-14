@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Version 01.07.00.00
+# Added - interserver_all - https://sigs.interserver.net/
 # Version 01.06.00.00
 # Added - abuse.ch  ----  https://sslbl.abuse.ch/blacklist/
 # Version 01.05.00.00
@@ -85,4 +87,23 @@ if [ -x `which curl` -a -x `which ipset` ]; then
            do ipset add $SETNAME4 -! $i
       done
    logger -t "feeder_block_abuse_ch_ips_ip_block" "$( ipset list $SETNAME4 | wc -l )"
+fi
+
+## Feeder Block 5
+## Feeder Block interserver_all - added in 01.07.00.00
+
+SETNAME5="interserver_all_ips"
+if [ -x `which curl` -a -x `which ipset` ]; then
+   feeder_block_interserver_all_ips=$( curl --compressed https://sigs.interserver.net/iprbl.txt 2>/dev/null | grep -v "#" )
+   logger -t "feeder_block_interserver_all_ips_ip_block" "Adding IPs to be blocked."
+   ipset flush $SETNAME5
+   sleep 5
+   ipset list $SETNAME5 &>/dev/null
+   ipset create $SETNAME5 iphash
+   iptables -I INPUT 1 -m set --match-set $SETNAME5 src -j DROP
+   iptables -A FORWARD -m set --match-set $SETNAME5 src -j DROP
+      for i in $feeder_block_interserver_all_ips
+           do ipset add $SETNAME5 $i
+      done
+   logger -t "feeder_block_interserver_all_ips_ip_block" "$( ipset list $SETNAME5 | wc -l )"
 fi
