@@ -1,5 +1,14 @@
 #!/bin/bash
 
+# Script used on Ubuntu - installed with iptables and ipset
+# I use this script to setup firewall rules to block bad traffic on my Edge Server
+
+echo ""
+echo "Starting Feeder Block script"
+echo "                   Ver. 01.07.01.00"
+
+# Version 01.07.01.00
+# Added some informational text in script
 # Version 01.07.00.00
 # Added - interserver_all - https://sigs.interserver.net/
 # Version 01.06.00.00
