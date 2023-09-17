@@ -2,3 +2,6 @@ https://danger.rulez.sk/projects/bruteforceblocker/blist.php
 https://danger.rulez.sk/index.php/bruteforceblocker/
 
 Also add update date and time
+
+https://blocklist.greensnow.co/greensnow.txt
+https://greensnow.co/
