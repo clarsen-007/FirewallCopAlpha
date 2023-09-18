@@ -32,6 +32,8 @@ echo ""
 # Version 01.04.00.00
 # Added - emergingthreats_compromised_ips
 
+## Creating Log file and star logging
+
 FILE=/var/log/feeder_block.log
 if [ -f "$FILE" ]
     then echo "Feeder_block will now renew bad IP list and firewall" > $FILE
