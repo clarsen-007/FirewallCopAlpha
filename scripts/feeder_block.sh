@@ -40,7 +40,7 @@ if [ -f "$FILE" ]
 fi
 
 echo ""
-echo "Starting Feeder Block script" | tee -a $FILE
+echo " ** Starting Feeder Block script" | tee -a $FILE
 echo "                   Ver. 01.10.00.01" | tee -a $FILE
 echo ""
 
