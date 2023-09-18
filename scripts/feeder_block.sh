@@ -131,9 +131,9 @@ fi
 ## Feeder Block bruteforceblocker - added in 01.08.00.00
 
 SETNAME6="bruteforceblocker_ips"
-curl --compressed https://danger.rulez.sk/projects/bruteforceblocker/blist.php 2>/dev/null \
-                                  | cut -d'#' -f1 | sed '/^$/d' > /tmp/bruteforceblocker_ips.txt
 if [ -x `which curl` -a -x `which ipset` ]; then
+   curl --compressed https://danger.rulez.sk/projects/bruteforceblocker/blist.php 2>/dev/null \
+                                  | cut -d'#' -f1 | sed '/^$/d' > /tmp/bruteforceblocker_ips.txt
    feeder_block_bruteforceblocker_ips=$( cat /tmp/bruteforceblocker_ips.txt )
    logger -t "feeder_block_bruteforceblocker_ips_ip_block" "Adding IPs to be blocked."
    ipset flush $SETNAME6
@@ -142,8 +142,8 @@ if [ -x `which curl` -a -x `which ipset` ]; then
    ipset create $SETNAME6 iphash
    iptables -I INPUT 1 -m set --match-set $SETNAME6 src -j DROP
    iptables -A FORWARD -m set --match-set $SETNAME6 src -j DROP
-      for i in $feeder_block_bruteforceblocker_all_ips
-           do ipset add $SETNAME6 $i
-      done
+      while read p
+          do ipset add $SETNAME6 $p
+      done < /tmp/bruteforceblocker_ips.txt
    logger -t "feeder_block_bruteforceblocker_ips_ip_block" "$( ipset list $SETNAME6 | wc -l )"
 fi
