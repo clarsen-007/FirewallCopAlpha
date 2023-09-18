@@ -60,7 +60,7 @@ if [ -x `which curl` -a -x `which ipset` ]; then
            do ipset add $SETNAME1 $i
       done
    logger -t "feeder_block_stamparm_ip_block" "$( ipset list $SETNAME1 | wc -l )"
-   ipset list $SETNAME1 | tee -a $FILE
+   ipset list $SETNAME1 | head -7 | tee -a $FILE
 fi
 
 ## Feeder Block 2
