@@ -51,9 +51,11 @@ if [ -x `which curl` -a -x `which ipset` ]; then
                       | grep -v "#" | grep -v -E "\s[1-2]$" | cut -f 1 )
    logger -t "feeder_block_stamparm_ip_block" "Adding IPs to be blocked."  
    ipset flush $SETNAME1
-   sleep 5
-   ipset list $SETNAME1 &>/dev/null
+   sleep 3
+   ipset del $SETNAME1
+   sleep 3
    ipset create $SETNAME1 iphash > /dev/null 2>&1
+   sleep 2
    iptables -I INPUT 1 -m set --match-set $SETNAME1 src -j DROP
    iptables -A FORWARD -m set --match-set $SETNAME1 src -j DROP
       for i in $feeder_block_stamparm_ips
