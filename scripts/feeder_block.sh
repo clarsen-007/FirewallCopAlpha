@@ -52,7 +52,7 @@ if [ -x `which curl` -a -x `which ipset` ]; then
    logger -t "feeder_block_stamparm_ip_block" "Adding IPs to be blocked."  
    ipset flush $SETNAME1
    sleep 3
-   ipset del $SETNAME1
+   ipset destroy $SETNAME1
    sleep 3
    ipset create $SETNAME1 iphash > /dev/null 2>&1
    sleep 2
