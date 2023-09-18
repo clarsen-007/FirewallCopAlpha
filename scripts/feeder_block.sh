@@ -115,15 +115,16 @@ if [ -x `which curl` -a -x `which ipset` ]; then
    feeder_block_abuse_ch_ips=$( cat /tmp/feeder_block_abuse_ch_ips.txt )
    logger -t "feeder_block_abuse_ch_ips_ip_block" "Adding IPs to be blocked."
    ipset flush $SETNAME4
-   sleep 5
-   ipset list $SETNAME4 &>/dev/null
-   ipset create $SETNAME4 hash:ip family inet
+   sleep 3
+   ipset create $SETNAME4 hash:ip family inet 2>/dev/null
+   sleep 2
    iptables -I INPUT 1 -m set --match-set $SETNAME4 src -j DROP
    iptables -A FORWARD -m set --match-set $SETNAME4 src -j DROP
       while read p
           do ipset add $SETNAME4 $p
       done < /tmp/feeder_block_abuse_ch_ips.txt
    logger -t "feeder_block_abuse_ch_ips_ip_block" "$( ipset list $SETNAME4 | wc -l )"
+   ipset list $SETNAME4 | head -7 | tee -a $FILE
 fi
 
 ## Feeder Block 5
@@ -134,15 +135,16 @@ if [ -x `which curl` -a -x `which ipset` ]; then
    feeder_block_interserver_all_ips=$( curl --compressed https://sigs.interserver.net/iprbl.txt 2>/dev/null | grep -v "#" )
    logger -t "feeder_block_interserver_all_ips_ip_block" "Adding IPs to be blocked."
    ipset flush $SETNAME5
-   sleep 5
-   ipset list $SETNAME5 &>/dev/null
-   ipset create $SETNAME5 iphash
+   sleep 3
+   ipset create $SETNAME5 iphash 2>/dev/null
+   sleep 2
    iptables -I INPUT 1 -m set --match-set $SETNAME5 src -j DROP
    iptables -A FORWARD -m set --match-set $SETNAME5 src -j DROP
       for i in $feeder_block_interserver_all_ips
            do ipset add $SETNAME5 $i
       done
    logger -t "feeder_block_interserver_all_ips_ip_block" "$( ipset list $SETNAME5 | wc -l )"
+   ipset list $SETNAME5 | head -7 | tee -a $FILE
 fi
 
 ## Feeder Block 6
@@ -155,15 +157,16 @@ if [ -x `which curl` -a -x `which ipset` ]; then
    feeder_block_bruteforceblocker_ips=$( cat /tmp/bruteforceblocker_ips.txt )
    logger -t "feeder_block_bruteforceblocker_ips_ip_block" "Adding IPs to be blocked."
    ipset flush $SETNAME6
-   sleep 5
-   ipset list $SETNAME6 &>/dev/null
-   ipset create $SETNAME6 iphash
+   sleep 3
+   ipset create $SETNAME6 iphash 2>/dev/null
+   sleep 2
    iptables -I INPUT 1 -m set --match-set $SETNAME6 src -j DROP
    iptables -A FORWARD -m set --match-set $SETNAME6 src -j DROP
       while read p
           do ipset add $SETNAME6 $p
       done < /tmp/bruteforceblocker_ips.txt
    logger -t "feeder_block_bruteforceblocker_ips_ip_block" "$( ipset list $SETNAME6 | wc -l )"
+   ipset list $SETNAME6 | head -7 | tee -a $FILE
 fi
 
 ## Feeder Block 7
@@ -174,13 +177,14 @@ if [ -x `which curl` -a -x `which ipset` ]; then
    feeder_block_greensnow_ips=$( curl --compressed https://blocklist.greensnow.co/greensnow.txt 2>/dev/null )
    logger -t "feeder_block_greensnow_ips_ip_block" "Adding IPs to be blocked."
    ipset flush $SETNAME7
-   sleep 5
-   ipset list $SETNAME7 &>/dev/null
-   ipset create $SETNAME7 iphash
+   sleep 3
+   ipset create $SETNAME7 iphash 2>/dev/null
+   sleep 2
    iptables -I INPUT 1 -m set --match-set $SETNAME7 src -j DROP
    iptables -A FORWARD -m set --match-set $SETNAME7 src -j DROP
       for i in $feeder_block_greensnow_ips
            do ipset add $SETNAME7 $i
       done
    logger -t "feeder_block_greensnow_ips_ip_block" "$( ipset list $SETNAME7 | wc -l )"
+   ipset list $SETNAME7 | head -7 | tee -a $FILE
 fi
