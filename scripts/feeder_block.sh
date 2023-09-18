@@ -14,6 +14,8 @@ echo ""
 echo "Starting Feeder Block script"
 echo "                   Ver. 01.07.01.00"
 
+# Version 01.08.00.00
+# Added - bruteforceblocker - https://danger.rulez.sk/index.php/bruteforceblocker/
 # Version 01.07.01.00
 # Added some informational text in script
 # Version 01.07.00.00
@@ -125,20 +127,21 @@ if [ -x `which curl` -a -x `which ipset` ]; then
 fi
 
 ## Feeder Block 6
-## Feeder Block interserver_all - added in 01.08.00.00
+## Feeder Block bruteforceblocker - added in 01.08.00.00
 
-SETNAME5="interserver_all_ips"
+SETNAME6="bruteforceblocker_ips"
 if [ -x `which curl` -a -x `which ipset` ]; then
-   feeder_block_interserver_all_ips=$( curl --compressed https://sigs.interserver.net/iprbl.txt 2>/dev/null | grep -v "#" )
-   logger -t "feeder_block_interserver_all_ips_ip_block" "Adding IPs to be blocked."
-   ipset flush $SETNAME5
+   feeder_block_bruteforceblocker_ips=$( curl --compressed https://danger.rulez.sk/projects/bruteforceblocker/blist.php 2>/dev/null \
+                                  | cut -d'#' -f1 | sed '/^$/d' )
+   logger -t "feeder_block_bruteforceblocker_ips_ip_block" "Adding IPs to be blocked."
+   ipset flush $SETNAME6
    sleep 5
-   ipset list $SETNAME5 &>/dev/null
-   ipset create $SETNAME5 iphash
-   iptables -I INPUT 1 -m set --match-set $SETNAME5 src -j DROP
-   iptables -A FORWARD -m set --match-set $SETNAME5 src -j DROP
-      for i in $feeder_block_interserver_all_ips
-           do ipset add $SETNAME5 $i
+   ipset list $SETNAME6 &>/dev/null
+   ipset create $SETNAME6 iphash
+   iptables -I INPUT 1 -m set --match-set $SETNAME6 src -j DROP
+   iptables -A FORWARD -m set --match-set $SETNAME6 src -j DROP
+      for i in $feeder_block_bruteforceblocker_all_ips
+           do ipset add $SETNAME6 $i
       done
-   logger -t "feeder_block_interserver_all_ips_ip_block" "$( ipset list $SETNAME5 | wc -l )"
+   logger -t "feeder_block_bruteforceblocker_ips_ip_block" "$( ipset list $SETNAME6 | wc -l )"
 fi
