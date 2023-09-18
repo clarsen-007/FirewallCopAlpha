@@ -10,6 +10,8 @@
 #                          ║                     ║              ║                     ║  ════════ >  Network / VLAN 3
 #                          ╚═════════════════════╝              ╚═════════════════════╝
 
+# Version 01.11.00.00
+# Added cleanup
 # Version 01.10.00.01
 # fix logging layout
 # Version 01.10.00.00
@@ -41,7 +43,7 @@ fi
 
 echo ""
 echo " ** Starting Feeder Block script" | tee -a $FILE
-echo "                   Ver. 01.10.00.01" | tee -a $FILE
+echo "                   Ver. 01.11.00.00" | tee -a $FILE
 echo ""
 
 date >> $FILE
@@ -197,3 +199,7 @@ if [ -x `which curl` -a -x `which ipset` ]; then
    echo -n "[$(date +"%d/%m/%Y %H:%M:%S")] " | tee -a $FILE
    ipset list $SETNAME7 | head -7 | tee -a $FILE
 fi
+
+## Cleanup
+rm /tmp/feeder_block_abuse_ch_ips.txt
+rm /tmp/bruteforceblocker_ips.txt
