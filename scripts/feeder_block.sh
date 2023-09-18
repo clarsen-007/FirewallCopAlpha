@@ -148,3 +148,22 @@ if [ -x `which curl` -a -x `which ipset` ]; then
       done < /tmp/bruteforceblocker_ips.txt
    logger -t "feeder_block_bruteforceblocker_ips_ip_block" "$( ipset list $SETNAME6 | wc -l )"
 fi
+
+## Feeder Block 7
+## Feeder Block greensnow.co - added in 01.09.00.00
+
+SETNAME7="greensnow_ips"
+if [ -x `which curl` -a -x `which ipset` ]; then
+   feeder_block_greensnow_ips=$( curl --compressed https://blocklist.greensnow.co/greensnow.txt 2>/dev/null )
+   logger -t "feeder_block_greensnow_ips_ip_block" "Adding IPs to be blocked."
+   ipset flush $SETNAME7
+   sleep 5
+   ipset list $SETNAME7 &>/dev/null
+   ipset create $SETNAME7 iphash
+   iptables -I INPUT 1 -m set --match-set $SETNAME7 src -j DROP
+   iptables -A FORWARD -m set --match-set $SETNAME7 src -j DROP
+      for i in $feeder_block_greensnow_ips
+           do ipset add $SETNAME7 $i
+      done
+   logger -t "feeder_block_greensnow_ips_ip_block" "$( ipset list $SETNAME7 | wc -l )"
+fi
