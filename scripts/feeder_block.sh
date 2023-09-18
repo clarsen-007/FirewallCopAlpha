@@ -92,8 +92,7 @@ fi
 SETNAME4="abuse_ch_ips"
 if [ -x `which curl` -a -x `which ipset` ]; then
    curl --compressed https://sslbl.abuse.ch/blacklist/sslipblacklist.txt 2>/dev/null \
-                     | grep -v "#" | sed 's/[[:blank:]]//g' > /tmp/feeder_block_abuse_ch_ips.txt
-   sleep 5
+                     | grep -v "#" | sed '/^$/d' | sed 's/\r$//' > /tmp/feeder_block_abuse_ch_ips.txt
    feeder_block_abuse_ch_ips=$( cat /tmp/feeder_block_abuse_ch_ips.txt )
    logger -t "feeder_block_abuse_ch_ips_ip_block" "Adding IPs to be blocked."
    ipset flush $SETNAME4
@@ -102,9 +101,9 @@ if [ -x `which curl` -a -x `which ipset` ]; then
    ipset create $SETNAME4 hash:ip family inet
    iptables -I INPUT 1 -m set --match-set $SETNAME4 src -j DROP
    iptables -A FORWARD -m set --match-set $SETNAME4 src -j DROP
-      for i in $feeder_block_abuse_ch_ips
-           do ipset add $SETNAME4 $i
-      done
+      while read p
+          do ipset add $SETNAME4 $p
+      done < /tmp/feeder_block_abuse_ch_ips.txt
    logger -t "feeder_block_abuse_ch_ips_ip_block" "$( ipset list $SETNAME4 | wc -l )"
 fi
 
