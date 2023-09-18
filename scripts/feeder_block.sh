@@ -12,9 +12,11 @@
 
 echo ""
 echo "Starting Feeder Block script"
-echo "                   Ver. 01.09.00.00"
+echo "                   Ver. 01.10.00.00"
 echo ""
 
+# Version 01.10.00.00
+# Added logging to new /var/log/feeder_block.log file
 # Version 01.09.00.00
 # Added - greensnow - https://greensnow.co
 # Version 01.08.00.01
@@ -71,9 +73,10 @@ if [ -x `which curl` -a -x `which ipset` ]; then
    feeder_block_emergingthreats_compromised_ips=$( curl --compressed https://rules.emergingthreats.net/blockrules/compromised-ips.txt 2>/dev/null )
    logger -t "feeder_block_emergingthreats_compromised_ips_ip_block" "Adding IPs to be blocked."
    ipset flush $SETNAME2
-   sleep 5
+   sleep 3
+   ipset create $SETNAME2 iphash 2>/dev/null
+   sleep 2
    ipset list $SETNAME2 &>/dev/null
-   ipset create $SETNAME2 iphash
    iptables -I INPUT 1 -m set --match-set $SETNAME2 src -j DROP
    iptables -A FORWARD -m set --match-set $SETNAME2 src -j DROP
       for i in $feeder_block_emergingthreats_compromised_ips
