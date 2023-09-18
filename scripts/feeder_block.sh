@@ -36,11 +36,11 @@ echo ""
 
 FILE=/var/log/feeder_block.log
 if [ -f "$FILE" ]
-    then echo "Feeder_block will now renew bad IP list and firewall" > $FILE
-    else touch $FILE && echo "Feeder_block will now renew bad IP list and firewall" > $FILE
+    then echo "Feeder_block will now renew bad IP list and firewall" >> $FILE
+    else touch $FILE && echo "Feeder_block will now renew bad IP list and firewall" >> $FILE
 fi
 
-date > $FILE
+date >> $FILE
 
 ## Feeder Block 1
 ## Feeder Block Stamparm - added in 01.01.00.00
