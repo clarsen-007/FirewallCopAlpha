@@ -53,7 +53,7 @@ if [ -x `which curl` -a -x `which ipset` ]; then
    ipset flush $SETNAME1
    sleep 5
    ipset list $SETNAME1 &>/dev/null
-   ipset create $SETNAME1 iphash
+   ipset create $SETNAME1 iphash > /dev/null 2>&1
    iptables -I INPUT 1 -m set --match-set $SETNAME1 src -j DROP
    iptables -A FORWARD -m set --match-set $SETNAME1 src -j DROP
       for i in $feeder_block_stamparm_ips
