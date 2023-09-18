@@ -49,7 +49,7 @@ SETNAME1="feeder_block_stamparm"
 if [ -x `which curl` -a -x `which ipset` ]; then
    feeder_block_stamparm_ips=$( curl --compressed https://raw.githubusercontent.com/stamparm/ipsum/master/ipsum.txt 2>/dev/null \
                       | grep -v "#" | grep -v -E "\s[1-2]$" | cut -f 1 )
-   logger -t "feeder_block_stamparm_ip_block" "Adding IPs to be blocked."
+   logger -t "feeder_block_stamparm_ip_block" "Adding IPs to be blocked."  
    ipset flush $SETNAME1
    sleep 5
    ipset list $SETNAME1 &>/dev/null
@@ -60,6 +60,7 @@ if [ -x `which curl` -a -x `which ipset` ]; then
            do ipset add $SETNAME1 $i
       done
    logger -t "feeder_block_stamparm_ip_block" "$( ipset list $SETNAME1 | wc -l )"
+   ipset list $SETNAME1 | tee -a $FILE
 fi
 
 ## Feeder Block 2
