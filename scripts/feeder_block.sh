@@ -76,13 +76,13 @@ if [ -x `which curl` -a -x `which ipset` ]; then
    sleep 3
    ipset create $SETNAME2 iphash 2>/dev/null
    sleep 2
-   ipset list $SETNAME2 &>/dev/null
    iptables -I INPUT 1 -m set --match-set $SETNAME2 src -j DROP
    iptables -A FORWARD -m set --match-set $SETNAME2 src -j DROP
       for i in $feeder_block_emergingthreats_compromised_ips
            do ipset add $SETNAME2 $i
       done
    logger -t "feeder_block_emergingthreats_compromised_ips_ip_block" "$( ipset list $SETNAME2 | wc -l )"
+   ipset list $SETNAME2 | head -7 | tee -a $FILE
 fi
 
 ## Feeder Block 3
@@ -93,15 +93,16 @@ if [ -x `which curl` -a -x `which ipset` ]; then
    feeder_block_blocklist_de_ips=$( curl --compressed https://lists.blocklist.de/lists/all.txt 2>/dev/null | grep -v ":" )
    logger -t "feeder_block_blocklist_de_ips_ip_block" "Adding IPs to be blocked."
    ipset flush $SETNAME3
-   sleep 5
-   ipset list $SETNAME3 &>/dev/null
-   ipset create $SETNAME3 iphash
+   sleep 3
+   ipset create $SETNAME3 iphash 2>/dev/null
+   sleep 2
    iptables -I INPUT 1 -m set --match-set $SETNAME3 src -j DROP
    iptables -A FORWARD -m set --match-set $SETNAME3 src -j DROP
       for i in $feeder_block_blocklist_de_ips
            do ipset add $SETNAME3 $i
       done
    logger -t "feeder_block_blocklist_de_ips_ip_block" "$( ipset list $SETNAME3 | wc -l )"
+   ipset list $SETNAME3 | head -7 | tee -a $FILE
 fi
 
 ## Feeder Block 4
