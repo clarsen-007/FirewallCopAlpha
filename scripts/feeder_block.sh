@@ -12,9 +12,11 @@
 
 echo ""
 echo "Starting Feeder Block script"
-echo "                   Ver. 01.08.00.01"
+echo "                   Ver. 01.09.00.00"
 echo ""
 
+# Version 01.09.00.00
+# Added - greensnow - https://greensnow.co
 # Version 01.08.00.01
 # Fixed issue with abuse.ch - Text file contained invalid entries.
 # Version 01.08.00.00
