@@ -10,11 +10,8 @@
 #                          ║                     ║              ║                     ║  ════════ >  Network / VLAN 3
 #                          ╚═════════════════════╝              ╚═════════════════════╝
 
-echo ""
-echo "Starting Feeder Block script"
-echo "                   Ver. 01.10.00.00"
-echo ""
-
+# Version 01.10.00.01
+# fix logging layout
 # Version 01.10.00.00
 # Added logging to new /var/log/feeder_block.log file
 # Version 01.09.00.00
@@ -42,6 +39,11 @@ if [ -f "$FILE" ]
     else touch $FILE && echo "Feeder_block will now renew bad IP list and firewall" >> $FILE
 fi
 
+echo ""
+echo "Starting Feeder Block script" | tee -a $FILE
+echo "                   Ver. 01.10.00.01" | tee -a $FILE
+echo ""
+
 date >> $FILE
 
 ## Feeder Block 1
@@ -62,7 +64,7 @@ if [ -x `which curl` -a -x `which ipset` ]; then
            do ipset add $SETNAME1 $i
       done
    logger -t "feeder_block_stamparm_ip_block" "$( ipset list $SETNAME1 | wc -l )"
-   echo -n "[$(date +"%d/%m/%Y %H:%M:%S")]" | tee -a $FILE
+   echo -n "[$(date +"%d/%m/%Y %H:%M:%S")] " | tee -a $FILE
    ipset list $SETNAME1 | head -7 | tee -a $FILE
 fi
 
@@ -83,6 +85,7 @@ if [ -x `which curl` -a -x `which ipset` ]; then
            do ipset add $SETNAME2 $i
       done
    logger -t "feeder_block_emergingthreats_compromised_ips_ip_block" "$( ipset list $SETNAME2 | wc -l )"
+   echo -n "[$(date +"%d/%m/%Y %H:%M:%S")] " | tee -a $FILE
    ipset list $SETNAME2 | head -7 | tee -a $FILE
 fi
 
@@ -103,6 +106,7 @@ if [ -x `which curl` -a -x `which ipset` ]; then
            do ipset add $SETNAME3 $i
       done
    logger -t "feeder_block_blocklist_de_ips_ip_block" "$( ipset list $SETNAME3 | wc -l )"
+   echo -n "[$(date +"%d/%m/%Y %H:%M:%S")] " | tee -a $FILE
    ipset list $SETNAME3 | head -7 | tee -a $FILE
 fi
 
@@ -125,6 +129,7 @@ if [ -x `which curl` -a -x `which ipset` ]; then
           do ipset add $SETNAME4 $p
       done < /tmp/feeder_block_abuse_ch_ips.txt
    logger -t "feeder_block_abuse_ch_ips_ip_block" "$( ipset list $SETNAME4 | wc -l )"
+   echo -n "[$(date +"%d/%m/%Y %H:%M:%S")] " | tee -a $FILE
    ipset list $SETNAME4 | head -7 | tee -a $FILE
 fi
 
@@ -145,6 +150,7 @@ if [ -x `which curl` -a -x `which ipset` ]; then
            do ipset add $SETNAME5 $i
       done
    logger -t "feeder_block_interserver_all_ips_ip_block" "$( ipset list $SETNAME5 | wc -l )"
+   echo -n "[$(date +"%d/%m/%Y %H:%M:%S")] " | tee -a $FILE
    ipset list $SETNAME5 | head -7 | tee -a $FILE
 fi
 
@@ -167,6 +173,7 @@ if [ -x `which curl` -a -x `which ipset` ]; then
           do ipset add $SETNAME6 $p
       done < /tmp/bruteforceblocker_ips.txt
    logger -t "feeder_block_bruteforceblocker_ips_ip_block" "$( ipset list $SETNAME6 | wc -l )"
+   echo -n "[$(date +"%d/%m/%Y %H:%M:%S")] " | tee -a $FILE
    ipset list $SETNAME6 | head -7 | tee -a $FILE
 fi
 
@@ -187,5 +194,6 @@ if [ -x `which curl` -a -x `which ipset` ]; then
            do ipset add $SETNAME7 $i
       done
    logger -t "feeder_block_greensnow_ips_ip_block" "$( ipset list $SETNAME7 | wc -l )"
+   echo -n "[$(date +"%d/%m/%Y %H:%M:%S")] " | tee -a $FILE
    ipset list $SETNAME7 | head -7 | tee -a $FILE
 fi
