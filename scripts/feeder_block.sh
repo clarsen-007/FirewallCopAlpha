@@ -50,6 +50,16 @@ echo ""
 
 date >> $FILE
 
+## Flushing firewall rules
+
+/usr/sbin/ufw disable
+sleep 2
+/usr/sbin/iptables -F
+sleep 2
+/usr/sbin/ufw enable
+sleep 2
+/usr/sbin/ufw status numbered | tee -a $FILE
+
 ## Feeder Block 1
 ## Feeder Block Stamparm - added in 01.01.00.00
 
