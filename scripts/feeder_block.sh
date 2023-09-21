@@ -208,7 +208,7 @@ fi
 SETNAME8="cybercrime_tracker_ips"
 if [ -x `which curl` -a -x `which ipset` ]; then
    feeder_block_cybercrime_tracker_ips=$( curl --compressed https://iplists.firehol.org/files/cybercrime.ipset \
-                                    | grep -v '#' 2>/dev/null )
+                                    | grep -v "#" 2>/dev/null )
    logger -t "feeder_block_cybercrime_tracker_ips_ip_block" "Adding IPs to be blocked."
    ipset flush $SETNAME8
    sleep 3
