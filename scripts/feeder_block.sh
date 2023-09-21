@@ -10,6 +10,8 @@
 #                          ║                     ║              ║                     ║  ════════ >  Network / VLAN 3
 #                          ╚═════════════════════╝              ╚═════════════════════╝
 
+# Version 01.12.00.00
+# Added - cybercrime-tracker.net  ----  https://http://cybercrime-tracker.net/
 # Version 01.11.00.00
 # Added cleanup
 # Version 01.10.00.01
@@ -43,7 +45,7 @@ fi
 
 echo ""
 echo " ** Starting Feeder Block script" | tee -a $FILE
-echo "                   Ver. 01.11.00.00" | tee -a $FILE
+echo "                   Ver. 01.12.00.00" | tee -a $FILE
 echo ""
 
 date >> $FILE
@@ -198,6 +200,28 @@ if [ -x `which curl` -a -x `which ipset` ]; then
    logger -t "feeder_block_greensnow_ips_ip_block" "$( ipset list $SETNAME7 | wc -l )"
    echo -n "[$(date +"%d/%m/%Y %H:%M:%S")] " | tee -a $FILE
    ipset list $SETNAME7 | head -7 | tee -a $FILE
+fi
+
+## Feeder Block 8
+## Feeder Block cybercrime-tracker.net - added in 01.12.00.00
+
+SETNAME8="cybercrime_tracker_ips"
+if [ -x `which curl` -a -x `which ipset` ]; then
+   feeder_block_cybercrime_tracker_ips=$( curl --compressed https://iplists.firehol.org/files/cybercrime.ipset \
+                                    | grep -v '#' 2>/dev/null )
+   logger -t "feeder_block_cybercrime_tracker_ips_ip_block" "Adding IPs to be blocked."
+   ipset flush $SETNAME8
+   sleep 3
+   ipset create $SETNAME8 iphash 2>/dev/null
+   sleep 2
+   iptables -I INPUT 1 -m set --match-set $SETNAME8 src -j DROP
+   iptables -A FORWARD -m set --match-set $SETNAME8 src -j DROP
+      for i in $feeder_block_cybercrime_tracker_ips
+           do ipset add $SETNAME8 $i
+      done
+   logger -t "feeder_block_cybercrime_tracker_ips_ip_block" "$( ipset list $SETNAME8 | wc -l )"
+   echo -n "[$(date +"%d/%m/%Y %H:%M:%S")] " | tee -a $FILE
+   ipset list $SETNAME8 | head -7 | tee -a $FILE
 fi
 
 ## Cleanup
