@@ -1,40 +1,5 @@
 #!/bin/bash
 
-# Script used on Ubuntu - installed with iptables and ipset
-# I use this script to setup firewall rules to block bad traffic on my Edge Server
-#                          ╔═════════════════════╗              ╔═════════════════════╗
-#                          ║ Ubuntu              ║              ║                     ║  ════════ >  Network / VLAN 1
-#                          ║ Edge Server         ║              ║  pfSense            ║
-# Internet    ════════ >   ║ Acting as my first  ║  ════════ >  ║  Main Firewall      ║  ════════ >  Network / VLAN 2
-#                          ║ Firewall            ║              ║                     ║
-#                          ║                     ║              ║                     ║  ════════ >  Network / VLAN 3
-#                          ╚═════════════════════╝              ╚═════════════════════╝
-
-# Version 01.12.00.00
-# Added - cybercrime-tracker.net  ----  https://http://cybercrime-tracker.net/
-# Version 01.11.00.00
-# Added cleanup
-# Version 01.10.00.01
-# fix logging layout
-# Version 01.10.00.00
-# Added logging to new /var/log/feeder_block.log file
-# Version 01.09.00.00
-# Added - greensnow - https://greensnow.co
-# Version 01.08.00.01
-# Fixed issue with abuse.ch - Text file contained invalid entries.
-# Version 01.08.00.00
-# Added - bruteforceblocker - https://danger.rulez.sk/index.php/bruteforceblocker/
-# Version 01.07.01.00
-# Added some informational text in script
-# Version 01.07.00.00
-# Added - interserver_all - https://sigs.interserver.net/
-# Version 01.06.00.00
-# Added - abuse.ch  ----  https://sslbl.abuse.ch/blacklist/
-# Version 01.05.00.00
-# Added - blocklist_de_ips  ----  https://lists.blocklist.de/lists/
-# Version 01.04.00.00
-# Added - emergingthreats_compromised_ips
-
 ## Creating Log file and star logging
 
 FILE=/var/log/feeder_block.log
