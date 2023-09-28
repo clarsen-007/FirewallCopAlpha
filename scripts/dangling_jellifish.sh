@@ -17,7 +17,7 @@ date >> $FILE
 
 ## Start Feeders
 
-FEEDERFILE=
+FEEDERFILE=$( curl --compress https://raw.githubusercontent.com/clarsen-007/FirewallCopAlpha/main/scripts/dangling_jellifish.conf
 while read -r line; do  
   
 #Readind each line in sequence  
