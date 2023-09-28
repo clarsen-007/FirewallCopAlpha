@@ -1,11 +1,26 @@
 #!/bin/bash
 
+## Creating Log file and star logging
 
+FILE=/var/log/firewallcopalpha.log
+if [ -f "$FILE" ]
+    then echo "Renewing bad IP list and firewall" >> $FILE
+    else touch $FILE && echo "Renewing bad IP list and firewall" >> $FILE
+fi
+
+echo ""
+echo " ** Starting script" | tee -a $FILE
+echo "             Ver. 00.02.00.00" | tee -a $FILE
+echo ""
+
+date >> $FILE
+
+## Start Feeders
 
 for Feeders in
 
 if [ -x `which curl` -a -x `which ipset` ]; then
-   feeder_block_emergingthreats_compromised_ips=$( curl --compressed https://rules.emergingthreats.net/blockrules/compromised-ips.txt 2>/dev/null )
+   feeder_block_emergingthreats_compromised_ips=$Feeders
    logger -t "feeder_block_emergingthreats_compromised_ips_ip_block" "Adding IPs to be blocked."
    ipset flush $SETNAME2
    sleep 3
