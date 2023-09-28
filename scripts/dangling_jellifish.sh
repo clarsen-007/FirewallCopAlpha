@@ -17,7 +17,16 @@ date >> $FILE
 
 ## Start Feeders
 
-for Feeders in
+FEEDERFILE=
+while read -r line; do  
+  
+#Readind each line in sequence  
+echo $line  
+done <read_file.txt
+
+
+
+
 
 if [ -x `which curl` -a -x `which ipset` ]; then
    feeder_block_emergingthreats_compromised_ips=$Feeders
