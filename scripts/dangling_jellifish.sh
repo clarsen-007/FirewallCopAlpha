@@ -33,13 +33,13 @@ if [ -x `which curl` -a -x `which ipset` ]; then
    logger -t "$( echo $SETNAME )" "Adding IPs to be blocked."  
    ipset flush $SETNAME
    sleep 3
-   iptables -D INPUT 1 -m set --match-set $SETNAMEIP src -j DROP
-   iptables -D FORWARD -m set --match-set $SETNAMEIP src -j DROP
+   iptables -D INPUT 1 -m set --match-set $SETNAME src -j DROP
+   iptables -D FORWARD -m set --match-set $SETNAME src -j DROP
    sleep 3
    ipset create $SETNAME
    sleep 2
-   iptables -I INPUT 1 -m set --match-set $SETNAMEIP src -j DROP
-   iptables -A FORWARD -m set --match-set $SETNAMEIP src -j DROP
+   iptables -I INPUT 1 -m set --match-set $SETNAME src -j DROP
+   iptables -A FORWARD -m set --match-set $SETNAME src -j DROP
    ipset add $SETNAME $SETNAMEIP
    logger -t "$( echo $SETNAME )" "$( ipset list $SETNAME | wc -l )"
    echo -n "[$(date +"%d/%m/%Y %H:%M:%S")] " | tee -a $FILE
