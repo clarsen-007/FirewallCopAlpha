@@ -3,7 +3,7 @@
 ## Creating Log file and star logging
 
 FILE=/var/log/firewallcopalpha.log
-TEMPFOLDER=/tmp/
+TEMPFOLDER=/tmp
 
 if [ -f "$FILE" ]
     then echo "Renewing bad IP list and firewall" >> $FILE
@@ -20,6 +20,7 @@ date >> $FILE
 ## Start Feeders
 
 wget -P $TEMPFOLDER https://raw.githubusercontent.com/clarsen-007/FirewallCopAlpha/main/scripts/dangling_jellifish.conf
+cat $TEMPFOLDER/dangling_jellifish.conf | grep -v "#" > $TEMPFOLDER/dangling_jellifish.feeder
 
 # while read -r line
 #  do FEEDLINELOADER
