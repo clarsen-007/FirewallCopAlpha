@@ -26,4 +26,4 @@ FEEDLINELOADER () {
 
 while read -r line
   do FEEDLINELOADER
-done < read_file.txt
+done < $FEEDERFILE
