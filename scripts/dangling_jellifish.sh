@@ -3,6 +3,8 @@
 ## Creating Log file and star logging
 
 FILE=/var/log/firewallcopalpha.log
+TEMPFOLDER=/tmp/
+
 if [ -f "$FILE" ]
     then echo "Renewing bad IP list and firewall" >> $FILE
     else touch $FILE && echo "Renewing bad IP list and firewall" >> $FILE
@@ -17,7 +19,8 @@ date >> $FILE
 
 ## Start Feeders
 
-FEEDERFILE=$( curl --compressed https://raw.githubusercontent.com/clarsen-007/FirewallCopAlpha/main/scripts/dangling_jellifish.conf 2>/dev/null )
+curl --compressed -o $TEMPFOLDER https://raw.githubusercontent.com/clarsen-007/FirewallCopAlpha/main/scripts/dangling_jellifish.conf | grep -v '#' 2>/dev/null
+curl --compressed -o $TEMPFOLDER https://raw.githubusercontent.com/clarsen-007/FirewallCopAlpha/main/scripts/dangling_jellifish.sh 2>/dev/null
 
 FEEDLINELOADER () {
   echo -e "$( $FEEDERFILE | cut -d'!' -f2 )_feeder_block" "Adding IPs to be blocked." | tee -a $FILE
