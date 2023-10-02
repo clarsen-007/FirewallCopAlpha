@@ -20,7 +20,7 @@ date >> $FILE
 FEEDERFILE=$( curl --compressed https://raw.githubusercontent.com/clarsen-007/FirewallCopAlpha/main/scripts/dangling_jellifish.conf 2>/dev/null )
 
 FEEDLINELOADER () {
-  echo -e "$( $FEEDERFILE | cut -d'@' -f2 )_feeder_block" "Adding IPs to be blocked." | tee -a $FILE
+  echo -e "$( $FEEDERFILE | cut -d'!' -f2 )_feeder_block" "Adding IPs to be blocked." | tee -a $FILE
 }
 
 
