@@ -36,7 +36,7 @@ if [ -x `which curl` -a -x `which ipset` ]; then
    iptables -D INPUT 1 -m set --match-set $SETNAME src -j DROP
    iptables -D FORWARD -m set --match-set $SETNAME src -j DROP
    sleep 3
-   ipset create $SETNAME
+   ipset create $SETNAME iphash
    sleep 2
    iptables -I INPUT 1 -m set --match-set $SETNAME src -j DROP
    iptables -A FORWARD -m set --match-set $SETNAME src -j DROP
