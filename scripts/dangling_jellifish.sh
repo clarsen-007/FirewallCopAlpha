@@ -25,6 +25,9 @@ cat $TEMPFOLDER/dangling_jellifish.conf | grep -v "#" | sed '/^$/d' > $TEMPFOLDE
 sleep 1
 rm $TEMPFOLDER/dangling_jellifish.conf
 
+FEEDER () {
+}
+
 while read -r line
-     do echo
+     do FEEDER
 done < $TEMPFOLDER/dangling_jellifish.feeder
