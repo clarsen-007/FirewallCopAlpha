@@ -19,7 +19,7 @@ date >> $FILE
 
 ## Start Feeders
 
-wget -P $TEMPFOLDER https://raw.githubusercontent.com/clarsen-007/FirewallCopAlpha/main/scripts/dangling_jellifish.conf | grep -v '#' 2>/dev/null
+wget -P $TEMPFOLDER https://raw.githubusercontent.com/clarsen-007/FirewallCopAlpha/main/scripts/dangling_jellifish.conf
 
 # while read -r line
 #  do FEEDLINELOADER
