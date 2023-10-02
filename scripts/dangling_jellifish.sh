@@ -21,11 +21,6 @@ date >> $FILE
 
 wget -o $TEMPFOLDER https://raw.githubusercontent.com/clarsen-007/FirewallCopAlpha/main/scripts/dangling_jellifish.conf | grep -v '#' 2>/dev/null
 
-FEEDLINELOADER () {
-  echo -e "$( $FEEDERFILE | cut -d'!' -f2 )_feeder_block" "Adding IPs to be blocked." | tee -a $FILE
-}
-
-
-while read -r line
-  do FEEDLINELOADER
-done < $FEEDERFILE
+# while read -r line
+#  do FEEDLINELOADER
+# done < $FEEDERFILE
