@@ -41,7 +41,6 @@ if [ -x `which curl` -a -x `which ipset` ]; then
    iptables -I INPUT 1 -m set --match-set $SETNAMEIP src -j DROP
    iptables -A FORWARD -m set --match-set $SETNAMEIP src -j DROP
    ipset add $SETNAME $SETNAMEIP
-      done
    logger -t "$( echo $SETNAME )" "$( ipset list $SETNAME | wc -l )"
    echo -n "[$(date +"%d/%m/%Y %H:%M:%S")] " | tee -a $FILE
    ipset list $SETNAME | head -7 | tee -a $FILE
