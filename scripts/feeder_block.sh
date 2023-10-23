@@ -209,7 +209,7 @@ sudo cscli decisions list --origin CAPI | cut -d ':' -f2 | cut -d '|' -f1 | grep
 ## Feeder Block 9
 ## Feeder Block crowdsec.net - added in 01.13.00.00
 
-SETNAME8="crowdsec_tracker_ips"
+SETNAME9="crowdsec_tracker_ips"
 cscli decisions list --origin CAPI | cut -d ':' -f2 | cut -d '|' -f1 \
                                     | grep -v '\---' | grep -i -v 'Value' > $TMP/crowdsec.txt
 if [ -x `which curl` -a -x `which ipset` ]; then
