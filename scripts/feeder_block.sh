@@ -3,6 +3,8 @@
 ## Creating Log file and star logging
 
 FILE=/var/log/feeder_block.log
+TMP=/tmp
+
 if [ -f "$FILE" ]
     then echo "Feeder_block will now renew bad IP list and firewall" >> $FILE
     else touch $FILE && echo "Feeder_block will now renew bad IP list and firewall" >> $FILE
@@ -208,9 +210,10 @@ sudo cscli decisions list --origin CAPI | cut -d ':' -f2 | cut -d '|' -f1 | grep
 ## Feeder Block crowdsec.net - added in 01.13.00.00
 
 SETNAME8="crowdsec_tracker_ips"
+cscli decisions list --origin CAPI | cut -d ':' -f2 | cut -d '|' -f1 \
+                                    | grep -v '\---' | grep -i -v 'Value' > $TMP/crowdsec.txt
 if [ -x `which curl` -a -x `which ipset` ]; then
-   feeder_block_crowdsec_tracker_ips=$( cscli decisions list --origin CAPI | cut -d ':' -f2 | cut -d '|' -f1 \
-                                    | grep -v '\---' | grep -i -v 'Value' )
+   feeder_block_crowdsec_tracker_ips=$TMP/crowdsec.txt
    logger -t "feeder_block_crowdsec_tracker_ips_ip_block" "Adding IPs to be blocked."
    ipset flush $SETNAME9
    sleep 3
@@ -218,9 +221,9 @@ if [ -x `which curl` -a -x `which ipset` ]; then
    sleep 2
    iptables -I INPUT 1 -m set --match-set $SETNAME9 src -j DROP
    iptables -A FORWARD -m set --match-set $SETNAME9 src -j DROP
-      for i in $feeder_block_crowdsec_tracker_ips
-           do ipset add $SETNAME9 $i
-      done
+      while IFS="" read -r p || [ -n "$p" ]
+           do ipset add $SETNAME9 $p
+      done < $feeder_block_crowdsec_tracker_ips
    logger -t "feeder_block_crowdsec_tracker_ips_ip_block" "$( ipset list $SETNAME9 | wc -l )"
    echo -n "[$(date +"%d/%m/%Y %H:%M:%S")] " | tee -a $FILE
    ipset list $SETNAME9 | head -7 | tee -a $FILE
@@ -229,3 +232,4 @@ fi
 ## Cleanup
 rm /tmp/feeder_block_abuse_ch_ips.txt
 rm /tmp/bruteforceblocker_ips.txt
+rm $TMP/crowdsec.txt
