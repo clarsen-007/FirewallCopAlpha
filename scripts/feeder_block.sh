@@ -202,6 +202,30 @@ if [ -x `which curl` -a -x `which ipset` ]; then
    ipset list $SETNAME8 | head -7 | tee -a $FILE
 fi
 
+sudo cscli decisions list --origin CAPI | cut -d ':' -f2 | cut -d '|' -f1 | grep -v '\---' | grep -i -v 'Value'
+
+## Feeder Block 9
+## Feeder Block crowdsec.net - added in 01.13.00.00
+
+SETNAME8="crowdsec_tracker_ips"
+if [ -x `which curl` -a -x `which ipset` ]; then
+   feeder_block_crowdsec_tracker_ips=$( cscli decisions list --origin CAPI | cut -d ':' -f2 | cut -d '|' -f1 \
+                                    | grep -v '\---' | grep -i -v 'Value' )
+   logger -t "feeder_block_crowdsec_tracker_ips_ip_block" "Adding IPs to be blocked."
+   ipset flush $SETNAME9
+   sleep 3
+   ipset create $SETNAME9 iphash 2>/dev/null
+   sleep 2
+   iptables -I INPUT 1 -m set --match-set $SETNAME9 src -j DROP
+   iptables -A FORWARD -m set --match-set $SETNAME9 src -j DROP
+      for i in $feeder_block_crowdsec_tracker_ips
+           do ipset add $SETNAME9 $i
+      done
+   logger -t "feeder_block_crowdsec_tracker_ips_ip_block" "$( ipset list $SETNAME9 | wc -l )"
+   echo -n "[$(date +"%d/%m/%Y %H:%M:%S")] " | tee -a $FILE
+   ipset list $SETNAME9 | head -7 | tee -a $FILE
+fi
+
 ## Cleanup
 rm /tmp/feeder_block_abuse_ch_ips.txt
 rm /tmp/bruteforceblocker_ips.txt
