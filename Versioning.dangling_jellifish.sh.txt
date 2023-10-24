@@ -15,7 +15,6 @@
 # Version 00.02.00.00
 # Currently in progress
 # Renaming to dangling_jellifish.sh
-# Redesign script to add config file
 # Version 00.01.12.00
 # Added - cybercrime-tracker.net  ----  https://http://cybercrime-tracker.net/
 # Version 00.01.11.00
