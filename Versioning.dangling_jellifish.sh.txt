@@ -8,6 +8,10 @@
 #                          ║                     ║              ║                     ║  ════════ >  Network / VLAN 3
 #                          ╚═════════════════════╝              ╚═════════════════════╝
 
+# Version 00.02.01.01
+# Cleanup
+# Version 00.02.01.00
+# Added - crowdsec - https://www.crowdsec.net/
 # Version 00.02.00.00
 # Currently in progress
 # Renaming to dangling_jellifish.sh
