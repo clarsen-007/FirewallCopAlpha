@@ -27,52 +27,52 @@ date >> $FILE
 # sleep 2
 # /usr/sbin/ufw status numbered | tee -a $FILE
 
+## Feeder Block 1
+## Feeder Block crowdsec.net - added in 01.13.00.00
 
-SETNAME9="crowdsec_tracker_ips"
+SETNAME1="crowdsec_tracker_ips"
 cscli decisions list --origin CAPI | cut -d ':' -f2 | cut -d '|' -f1 \
                                     | grep -v '\---' | grep -i -v 'Value' > $TMP/crowdsec.txt
 if [ -x `which curl` -a -x `which ipset` ]; then
    feeder_block_crowdsec_tracker_ips=$TMP/crowdsec.txt
    logger -t "feeder_block_crowdsec_tracker_ips_ip_block" "Adding IPs to be blocked."
-   ipset flush $SETNAME9
-   sleep 3
-   ipset create $SETNAME9 iphash 2>/dev/null
-   sleep 2
-   iptables -I INPUT 1 -m set --match-set $SETNAME9 src -j DROP
-   iptables -A FORWARD -m set --match-set $SETNAME9 src -j DROP
-      while IFS="" read -r p || [ -n "$p" ]
-           do ipset add $SETNAME9 $p
-      done < $feeder_block_crowdsec_tracker_ips
-   logger -t "feeder_block_crowdsec_tracker_ips_ip_block" "$( ipset list $SETNAME9 | wc -l )"
-   echo -n "[$(date +"%d/%m/%Y %H:%M:%S")] " | tee -a $FILE
-   ipset list $SETNAME9 | head -7 | tee -a $FILE
-fi
-
-sleep 600
-
-## Feeder Block 1
-## Feeder Block Stamparm - added in 01.01.00.00
-
-SETNAME1="feeder_block_stamparm"
-if [ -x `which curl` -a -x `which ipset` ]; then
-   feeder_block_stamparm_ips=$( curl --compressed https://raw.githubusercontent.com/stamparm/ipsum/master/ipsum.txt 2>/dev/null \
-                      | grep -v "#" | grep -v -E "\s[1-2]$" | cut -f 1 )
-   logger -t "feeder_block_stamparm_ip_block" "Adding IPs to be blocked."  
    ipset flush $SETNAME1
-   sleep 3
-   iptables -D INPUT 1 -m set --match-set $SETNAME1 src -j DROP
-   iptables -D FORWARD -m set --match-set $SETNAME1 src -j DROP
    sleep 3
    ipset create $SETNAME1 iphash 2>/dev/null
    sleep 2
    iptables -I INPUT 1 -m set --match-set $SETNAME1 src -j DROP
    iptables -A FORWARD -m set --match-set $SETNAME1 src -j DROP
-      for i in $feeder_block_stamparm_ips
-           do ipset add $SETNAME1 $i
-      done
-   logger -t "feeder_block_stamparm_ip_block" "$( ipset list $SETNAME1 | wc -l )"
+      while IFS="" read -r p || [ -n "$p" ]
+           do ipset add $SETNAME1 $p
+      done < $feeder_block_crowdsec_tracker_ips
+   logger -t "feeder_block_crowdsec_tracker_ips_ip_block" "$( ipset list $SETNAME1 | wc -l )"
    echo -n "[$(date +"%d/%m/%Y %H:%M:%S")] " | tee -a $FILE
    ipset list $SETNAME1 | head -7 | tee -a $FILE
+fi
+
+## Feeder Block 9
+## Feeder Block Stamparm - added in 01.01.00.00
+
+SETNAME9="feeder_block_stamparm"
+if [ -x `which curl` -a -x `which ipset` ]; then
+   feeder_block_stamparm_ips=$( curl --compressed https://raw.githubusercontent.com/stamparm/ipsum/master/ipsum.txt 2>/dev/null \
+                      | grep -v "#" | grep -v -E "\s[1-2]$" | cut -f 1 )
+   logger -t "feeder_block_stamparm_ip_block" "Adding IPs to be blocked."  
+   ipset flush $SETNAME9
+   sleep 3
+   iptables -D INPUT 1 -m set --match-set $SETNAME9 src -j DROP
+   iptables -D FORWARD -m set --match-set $SETNAME9 src -j DROP
+   sleep 3
+   ipset create $SETNAME9 iphash 2>/dev/null
+   sleep 2
+   iptables -I INPUT 1 -m set --match-set $SETNAME9 src -j DROP
+   iptables -A FORWARD -m set --match-set $SETNAME9 src -j DROP
+      for i in $feeder_block_stamparm_ips
+           do ipset add $SETNAME9 $i
+      done
+   logger -t "feeder_block_stamparm_ip_block" "$( ipset list $SETNAME9 | wc -l )"
+   echo -n "[$(date +"%d/%m/%Y %H:%M:%S")] " | tee -a $FILE
+   ipset list $SETNAME9 | head -7 | tee -a $FILE
 fi
 
 ## Feeder Block 2
@@ -225,29 +225,6 @@ if [ -x `which curl` -a -x `which ipset` ]; then
    logger -t "feeder_block_cybercrime_tracker_ips_ip_block" "$( ipset list $SETNAME8 | wc -l )"
    echo -n "[$(date +"%d/%m/%Y %H:%M:%S")] " | tee -a $FILE
    ipset list $SETNAME8 | head -7 | tee -a $FILE
-fi
-
-## Feeder Block 9
-## Feeder Block crowdsec.net - added in 01.13.00.00
-
-SETNAME9="crowdsec_tracker_ips"
-cscli decisions list --origin CAPI | cut -d ':' -f2 | cut -d '|' -f1 \
-                                    | grep -v '\---' | grep -i -v 'Value' > $TMP/crowdsec.txt
-if [ -x `which curl` -a -x `which ipset` ]; then
-   feeder_block_crowdsec_tracker_ips=$TMP/crowdsec.txt
-   logger -t "feeder_block_crowdsec_tracker_ips_ip_block" "Adding IPs to be blocked."
-   ipset flush $SETNAME9
-   sleep 3
-   ipset create $SETNAME9 iphash 2>/dev/null
-   sleep 2
-   iptables -I INPUT 1 -m set --match-set $SETNAME9 src -j DROP
-   iptables -A FORWARD -m set --match-set $SETNAME9 src -j DROP
-      while IFS="" read -r p || [ -n "$p" ]
-           do ipset add $SETNAME9 $p
-      done < $feeder_block_crowdsec_tracker_ips
-   logger -t "feeder_block_crowdsec_tracker_ips_ip_block" "$( ipset list $SETNAME9 | wc -l )"
-   echo -n "[$(date +"%d/%m/%Y %H:%M:%S")] " | tee -a $FILE
-   ipset list $SETNAME9 | head -7 | tee -a $FILE
 fi
 
 ## Cleanup
