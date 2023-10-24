@@ -12,7 +12,7 @@ fi
 
 echo ""
 echo " ** Starting Feeder Block script" | tee -a $FILE
-echo "                   Ver. 01.13.00.01" | tee -a $FILE
+echo "                   Ver. 00.02.01.01" | tee -a $FILE
 echo ""
 
 date >> $FILE
@@ -33,7 +33,7 @@ systemctl restart crowdsec.service
 systemctl status crowdsec.service | tee -a $FILE
 
 ## Feeder Block 1
-## Feeder Block Stamparm - added in 01.01.00.00
+## Feeder Block Stamparm - added in 00.01.01.00
 
 SETNAME1="feeder_block_stamparm"
 if [ -x `which curl` -a -x `which ipset` ]; then
@@ -58,7 +58,7 @@ if [ -x `which curl` -a -x `which ipset` ]; then
 fi
 
 ## Feeder Block 2
-## Feeder Block emergingthreats_compromised_ips - added in 01.04.00.00
+## Feeder Block emergingthreats_compromised_ips - added in 00.01.04.00
 
 SETNAME2="emergingthreats_compromised_ips"
 if [ -x `which curl` -a -x `which ipset` ]; then
@@ -79,7 +79,7 @@ if [ -x `which curl` -a -x `which ipset` ]; then
 fi
 
 ## Feeder Block 3
-## Feeder Block blocklist.de - added in 01.05.00.00
+## Feeder Block blocklist.de - added in 00.01.05.00
 
 SETNAME3="blocklist_de_ips"
 if [ -x `which curl` -a -x `which ipset` ]; then
@@ -100,7 +100,7 @@ if [ -x `which curl` -a -x `which ipset` ]; then
 fi
 
 ## Feeder Block 4
-## Feeder Block abuse.ch - added in 01.06.00.00
+## Feeder Block abuse.ch - added in 00.01.06.00
 
 SETNAME4="abuse_ch_ips"
 if [ -x `which curl` -a -x `which ipset` ]; then
@@ -123,7 +123,7 @@ if [ -x `which curl` -a -x `which ipset` ]; then
 fi
 
 ## Feeder Block 5
-## Feeder Block interserver_all - added in 01.07.00.00
+## Feeder Block interserver_all - added in 00.01.07.00
 
 SETNAME5="interserver_all_ips"
 if [ -x `which curl` -a -x `which ipset` ]; then
@@ -144,7 +144,7 @@ if [ -x `which curl` -a -x `which ipset` ]; then
 fi
 
 ## Feeder Block 6
-## Feeder Block bruteforceblocker - added in 01.08.00.00
+## Feeder Block bruteforceblocker - added in 00.01.08.00
 
 SETNAME6="bruteforceblocker_ips"
 if [ -x `which curl` -a -x `which ipset` ]; then
@@ -167,7 +167,7 @@ if [ -x `which curl` -a -x `which ipset` ]; then
 fi
 
 ## Feeder Block 7
-## Feeder Block greensnow.co - added in 01.09.00.00
+## Feeder Block greensnow.co - added in 00.01.09.00
 
 SETNAME7="greensnow_ips"
 if [ -x `which curl` -a -x `which ipset` ]; then
@@ -188,7 +188,7 @@ if [ -x `which curl` -a -x `which ipset` ]; then
 fi
 
 ## Feeder Block 8
-## Feeder Block cybercrime-tracker.net - added in 01.12.00.00
+## Feeder Block cybercrime-tracker.net - added in 00.01.12.00
 
 SETNAME8="cybercrime_tracker_ips"
 if [ -x `which curl` -a -x `which ipset` ]; then
@@ -210,7 +210,7 @@ if [ -x `which curl` -a -x `which ipset` ]; then
 fi
 
 ## Feeder Block 9
-## Feeder Block crowdsec.net - added in 01.13.00.00
+## Feeder Block crowdsec.net - added in 00.02.01.00
 
 SETNAME9="crowdsec_tracker_ips"
 cscli decisions list --origin CAPI | cut -d ':' -f2 | cut -d '|' -f1 \
