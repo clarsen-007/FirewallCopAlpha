@@ -145,7 +145,7 @@ fi
 
 SETNAME5="interserver_all_ips"
 if [ -x `which curl` -a -x `which ipset` ]; then
-   feeder_block_interserver_all_ips=$( curl --compressed https://sigs.interserver.net/iprbl.txt 2>/dev/null | grep -v "#" )
+   feeder_block_interserver_all_ips=$( curl --compressed https://sigs.interserver.net/iprbl.txt 2>/dev/null | grep -v "#" | grep -v '127.0.0.[0-9]' )
    logger -t "feeder_block_interserver_all_ips_ip_block" "Adding IPs to be blocked."
    ipset flush $SETNAME5
    sleep 3
