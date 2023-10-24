@@ -27,6 +27,29 @@ date >> $FILE
 # sleep 2
 # /usr/sbin/ufw status numbered | tee -a $FILE
 
+
+SETNAME9="crowdsec_tracker_ips"
+cscli decisions list --origin CAPI | cut -d ':' -f2 | cut -d '|' -f1 \
+                                    | grep -v '\---' | grep -i -v 'Value' > $TMP/crowdsec.txt
+if [ -x `which curl` -a -x `which ipset` ]; then
+   feeder_block_crowdsec_tracker_ips=$TMP/crowdsec.txt
+   logger -t "feeder_block_crowdsec_tracker_ips_ip_block" "Adding IPs to be blocked."
+   ipset flush $SETNAME9
+   sleep 3
+   ipset create $SETNAME9 iphash 2>/dev/null
+   sleep 2
+   iptables -I INPUT 1 -m set --match-set $SETNAME9 src -j DROP
+   iptables -A FORWARD -m set --match-set $SETNAME9 src -j DROP
+      while IFS="" read -r p || [ -n "$p" ]
+           do ipset add $SETNAME9 $p
+      done < $feeder_block_crowdsec_tracker_ips
+   logger -t "feeder_block_crowdsec_tracker_ips_ip_block" "$( ipset list $SETNAME9 | wc -l )"
+   echo -n "[$(date +"%d/%m/%Y %H:%M:%S")] " | tee -a $FILE
+   ipset list $SETNAME9 | head -7 | tee -a $FILE
+fi
+
+sleep 600
+
 ## Feeder Block 1
 ## Feeder Block Stamparm - added in 01.01.00.00
 
