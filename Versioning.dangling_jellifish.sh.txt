@@ -16,7 +16,7 @@
 # Currently in progress
 # Renaming to dangling_jellifish.sh
 # Version 00.01.12.00
-# Added - cybercrime-tracker.net  ----  https://http://cybercrime-tracker.net/
+# Added - cybercrime-tracker.net - https://http://cybercrime-tracker.net/
 # Version 00.01.11.00
 # Added cleanup
 # Version 00.01.10.01
@@ -34,8 +34,8 @@
 # Version 00.01.07.00
 # Added - interserver_all - https://sigs.interserver.net/
 # Version 00.01.06.00
-# Added - abuse.ch  ----  https://sslbl.abuse.ch/blacklist/
+# Added - abuse.ch - https://sslbl.abuse.ch/blacklist/
 # Version 00.01.05.00
-# Added - blocklist_de_ips  ----  https://lists.blocklist.de/lists/
+# Added - blocklist_de_ips - https://lists.blocklist.de/lists/
 # Version 00.01.04.00
 # Added - emergingthreats_compromised_ips
