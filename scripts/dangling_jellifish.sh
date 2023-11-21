@@ -211,6 +211,10 @@ fi
 
 ## Feeder Block 9
 ## Feeder Block crowdsec.net - added in 00.02.01.00
+## For Crowdsec to work - please install as follow
+## cd /tmp
+## curl -s https://packagecloud.io/install/repositories/crowdsec/crowdsec/script.deb.sh | sudo bash
+## sudo apt install crowdsec
 
 SETNAME9="crowdsec_tracker_ips"
 cscli decisions list --origin CAPI | cut -d ':' -f2 | cut -d '|' -f1 \
