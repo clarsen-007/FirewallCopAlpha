@@ -12,7 +12,7 @@ fi
 
 echo ""
 echo " ** Starting Feeder Block script" | tee -a $FILE
-echo "                   Ver. 00.02.01.01" | tee -a $FILE
+echo "                   Ver. 00.02.01.02" | tee -a $FILE
 echo ""
 
 date >> $FILE
