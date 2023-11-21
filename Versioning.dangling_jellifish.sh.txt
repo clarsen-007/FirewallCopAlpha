@@ -8,6 +8,11 @@
 #                          ║                     ║              ║                     ║  ════════ >  Network / VLAN 3
 #                          ╚═════════════════════╝              ╚═════════════════════╝
 
+##
+
+
+# Version 00.02.01.02
+# Added some install instructions for Croudsec
 # Version 00.02.01.01
 # Cleanup
 # Version 00.02.01.00
